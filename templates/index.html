@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS Reports to Wikipedia</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <div>
+                <h1>CRS Reports &rarr; Wikipedia</h1>
+                <p>Help improve Wikipedia with authoritative Congressional Research Service reports</p>
+            </div>
+            <div class="header-badges">
+                <span class="badge">Congress.gov API</span>
+                <span class="badge">AI-Powered</span>
+                <span class="badge">13,600+ Reports</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Workflow Steps -->
+        <div class="workflow">
+            <div class="workflow-step active">
+                <span class="step-number">1</span>
+                Find a CRS Report
+            </div>
+            <span class="workflow-arrow">&rarr;</span>
+            <div class="workflow-step">
+                <span class="step-number">2</span>
+                Match Wikipedia Articles
+            </div>
+            <span class="workflow-arrow">&rarr;</span>
+            <div class="workflow-step">
+                <span class="step-number">3</span>
+                Review Suggested Edits
+            </div>
+        </div>
+
+        <!-- Step 1: Search Reports -->
+        <div id="panel-search">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Find a CRS Report</h2>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search by keyword (e.g., 'climate change', 'immigration', 'defense spending')...">
+                    <button class="btn btn-primary" onclick="searchReports()">Search</button>
+                </div>
+                <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem">
+                    <span class="info-text" style="margin: 0">Or enter a report ID directly:</span>
+                    <input type="text" id="report-id-input" placeholder="e.g., R45342, IF10639" style="width: 200px; padding: 0.4rem 0.75rem; border: 2px solid var(--border); border-radius: 6px; font-size: 0.85rem">
+                    <button class="btn btn-sm btn-outline" onclick="lookupReportById()">Go</button>
+                </div>
+                <div id="report-list" class="report-list scrollable" style="max-height: 550px">
+                    <div class="loading"><div class="spinner"></div>Loading recent reports...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Report Detail + Wikipedia Matches -->
+        <div id="panel-report-detail" class="panel-hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Selected Report</h2>
+                </div>
+                <div id="report-detail"></div>
+            </div>
+        </div>
+
+        <div id="panel-matches" class="panel-hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Matching Wikipedia Articles</h2>
+                </div>
+                <p class="info-text">These Wikipedia articles are related to the selected CRS report. Click "Analyze & Suggest Edits" to identify information gaps and generate citation-ready edit suggestions.</p>
+                <div id="wiki-matches" class="scrollable" style="max-height: 600px">
+                    <div class="loading"><div class="spinner"></div>Finding relevant Wikipedia articles...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Analysis & Suggestions -->
+        <div id="panel-analysis" class="panel-hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h2>AI Analysis &amp; Edit Suggestions</h2>
+                </div>
+                <div id="analysis-content">
+                    <div class="empty-state">
+                        <h3>No analysis yet</h3>
+                        <p>Click "Analyze & Suggest Edits" on a Wikipedia article to begin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Topic Discovery -->
+        <div id="panel-discover" class="card" style="margin-top: 1rem">
+            <div class="card-header">
+                <h2>Discover Opportunities by Topic</h2>
+            </div>
+            <p class="info-text">Browse CRS policy areas to find Wikipedia articles that could benefit from CRS report content. Articles without existing CRS citations represent the greatest opportunities.</p>
+            <div id="topic-grid" class="topic-grid">
+                <div class="loading"><div class="spinner"></div>Loading topics...</div>
+            </div>
+            <div id="discover-results"></div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="about-section">
+            <h3>How It Works</h3>
+            <p>
+                Wikipedia is the #1 source for policy information on the internet, but it doesn't incorporate CRS reports
+                as much as it should. Congressional Research Service reports are authoritative, non-partisan analyses
+                produced for Congress &mdash; exactly the kind of high-quality source Wikipedia needs.
+            </p>
+            <p style="margin-top: 0.5rem">This tool helps Wikipedia editors by:</p>
+            <ul>
+                <li><strong>Finding CRS reports</strong> through the official Congress.gov API (13,600+ reports)</li>
+                <li><strong>Automatically matching</strong> reports to relevant Wikipedia articles using AI</li>
+                <li><strong>Identifying information gaps</strong> &mdash; what's in the CRS report but missing from Wikipedia</li>
+                <li><strong>Generating edit suggestions</strong> with properly formatted wikitext and <code>{{ '{{cite web}}' }}</code> citations</li>
+            </ul>
+            <p style="margin-top: 0.75rem; font-size: 0.82rem; color: #7f8c8d;">
+                CRS reports are public domain works of the U.S. government, making them ideal Wikipedia sources.
+                This tool does not make edits to Wikipedia directly &mdash; it assists human editors in identifying and formatting improvements.
+            </p>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
