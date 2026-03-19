@@ -1,10 +1,11 @@
 """Client for the Congress.gov API to fetch CRS reports."""
 
+import os
 import requests
 import time
 import threading
 
-API_KEY = "CONGRESS_API_KEY"
+API_KEY = os.environ.get("CONGRESS_API_KEY", "DEMO_KEY")
 BASE_URL = "https://api.congress.gov/v3"
 
 # Simple in-memory cache
